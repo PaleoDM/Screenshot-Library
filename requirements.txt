@@ -1,5 +1,5 @@
 # Core dependencies
-streamlit==1.31.0
+streamlit>=1.37,<1.51
 chromadb==0.4.22
 anthropic==0.31.0
 Pillow==10.2.0

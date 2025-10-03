@@ -1,8 +1,5 @@
-# Numeric stack
-numpy>=1.26.4,<2.0
-
-# Core app
-streamlit>=1.37,<1.51
+# Core dependencies
+streamlit==1.31.0
 chromadb==0.4.22
 anthropic==0.31.0
 Pillow==10.2.0
@@ -14,4 +11,3 @@ torchvision==0.17.0
 
 # Utilities
 python-dotenv==1.0.1
-httpx<0.28

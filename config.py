@@ -19,8 +19,8 @@ PROJECT_TAG_SAMPLE_SIZE = 5  # Number of images to sample for project-level tagg
 MAX_TAGS_PER_IMAGE = 10
 MAX_PROJECT_TAGS = 8
 
-# GPT-4V settings
-GPT_MODEL = "gpt-4o"
+# Anthropic settings
+ANTHROPIC_MODEL = "claude-sonnet-4-5-20250929"
 MAX_TOKENS = 300
 
 # UI settings

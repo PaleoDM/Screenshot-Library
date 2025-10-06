@@ -233,7 +233,7 @@ def generate_project_tags(image_paths: List[str], project_name: str) -> List[str
         })
 
     try:
-        response = client.messages.create(
+        response = get_client().messages.create(
             model=config.ANTHROPIC_MODEL,
             max_tokens=config.MAX_TOKENS,
             temperature=0.3,
@@ -299,7 +299,7 @@ Example response:
 Respond with JSON only, no additional text."""
 
     try:
-        response = client.messages.create(
+        response = get_client().messages.create(
             model=config.ANTHROPIC_MODEL,
             max_tokens=config.MAX_TOKENS,
             temperature=0.3,

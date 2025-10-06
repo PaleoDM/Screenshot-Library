@@ -30,10 +30,6 @@ st.set_page_config(
     layout="wide"
 )
 
-# Ensure required directories exist
-os.makedirs(config.CHROMA_DB_PATH, exist_ok=True)
-os.makedirs("screenshots_library", exist_ok=True)
-
 # --- Handle ?home=1 "go home" link ---
 if st.query_params.get("home") == "1":
     # Clear any search or filter states if desired

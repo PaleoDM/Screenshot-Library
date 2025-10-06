@@ -41,48 +41,56 @@ def add_screenshot_to_db(image_path, project_name, project_tags, image_data):
         project_tags: List of project-level tags
         image_data: Dict with company_name, product_category, and descriptive_tags
     """
-    collection = get_or_create_collection()
-    
-    # Create unique ID from path
-    doc_id = f"{project_name}_{os.path.basename(image_path)}"
-    
-    # Extract structured data
-    company_name = image_data.get('company_name', '')
-    product_category = image_data.get('product_category', '')
-    descriptive_tags = image_data.get('descriptive_tags', [])
-    
-    # Combine all tags for search
-    all_tags = list(set(project_tags + descriptive_tags))
-    
-    # Prepare metadata with structured fields
-    metadata = {
-        "project_name": project_name,
-        "file_path": image_path,
-        "company_name": company_name,
-        "product_category": product_category,
-        "project_tags": ",".join(project_tags),
-        "descriptive_tags": ",".join(descriptive_tags),
-        "all_tags": ",".join(all_tags)
-    }
-    
-    # Read image for embedding
-    with Image.open(image_path) as img:
-        # Convert to RGB if needed
-        if img.mode != 'RGB':
-            img = img.convert('RGB')
+    try:
+        collection = get_or_create_collection()
         
-        # Create a data URI for CLIP
-        buffered = io.BytesIO()
-        img.save(buffered, format="PNG")
+        # Create unique ID from path
+        doc_id = f"{project_name}_{os.path.basename(image_path)}"
         
-        # Add to collection
-        collection.add(
-            ids=[doc_id],
-            metadatas=[metadata],
-            documents=[image_path]  # CLIP will use this to load the image
-        )
+        # Extract structured data
+        company_name = image_data.get('company_name', '')
+        product_category = image_data.get('product_category', '')
+        descriptive_tags = image_data.get('descriptive_tags', [])
+        
+        # Combine all tags for search
+        all_tags = list(set(project_tags + descriptive_tags))
+        
+        # Prepare metadata with structured fields
+        metadata = {
+            "project_name": project_name,
+            "file_path": image_path,
+            "company_name": company_name,
+            "product_category": product_category,
+            "project_tags": ",".join(project_tags),
+            "descriptive_tags": ",".join(descriptive_tags),
+            "all_tags": ",".join(all_tags)
+        }
+        
+        # Read image for embedding
+        with Image.open(image_path) as img:
+            # Convert to RGB if needed
+            if img.mode != 'RGB':
+                img = img.convert('RGB')
+            
+            # Create a data URI for CLIP
+            buffered = io.BytesIO()
+            img.save(buffered, format="PNG")
+            
+            # Add to collection
+            collection.add(
+                ids=[doc_id],
+                metadatas=[metadata],
+                documents=[image_path]
+            )
+        
+        return doc_id
     
-    return doc_id
+    except Exception as e:
+        import traceback
+        import sys
+        print(f"ERROR in add_screenshot_to_db for {image_path}: {e}", file=sys.stderr)
+        traceback.print_exc(file=sys.stderr)
+        raise  # Re-raise to see the full error in Streamlit
 
 
 def get_all_screenshots():

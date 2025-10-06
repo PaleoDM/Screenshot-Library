@@ -1,9 +1,10 @@
 """
 Configuration settings for the UI Screenshot Search application
 """
+import os
 
-# Chroma DB settings
-CHROMA_DB_PATH = "./chroma_db"
+# Chroma DB settings - use /tmp for writable storage on Streamlit Cloud
+CHROMA_DB_PATH = "/tmp/chroma_db" if os.path.exists("/home/adminuser/venv") else "./chroma_db"
 COLLECTION_NAME = "ui_screenshots"
 
 # Image processing settings

@@ -199,7 +199,8 @@ def generate_project_tags(image_paths: List[str], project_name: str) -> List[str
                 "4) Target audience or use case\n\n"
                 'Return a JSON object with a single key "project_tags" containing an array of 5-10 common tags.\n'
                 "Tags should be lowercase, concise, and focused on SHARED characteristics.\n\n"
-                'Example: {"project_tags": ["mobile-first", "dark-mode", "social-features", "card-based-layout", "onboarding-flow"]}\n\n'
+                "IMPORTANT: Use spaces between words, NOT hyphens. Example: \"mobile first\" not \"mobile-first\"\n\n"
+                'Example: {"project_tags": ["mobile first", "dark mode", "social features", "card based layout", "onboarding flow"]}\n\n'
                 "Respond with JSON only, no additional text."
             ),
         }
@@ -244,7 +245,7 @@ def generate_project_tags(image_paths: List[str], project_name: str) -> List[str
         print(f"Error generating project tags: {e}")
         # Fallback tags based on project name
         base = project_name.lower().strip().replace(" ", "-") if project_name else "project"
-        return [base, "ui-design", "interface"]
+        return [base, "ui design", "interface"]
 
 def generate_image_tags(image_path: str, project_tags: List[str] = None) -> Dict[str, Any]:
     """
@@ -267,14 +268,16 @@ Return a JSON object with exactly these keys:
 2. "product_category": The type of product/app (e.g., "mobile banking app", "e-commerce website", "productivity tool")
 3. "descriptive_tags": An array of 8-12 specific UI element and feature tags
 
+IMPORTANT: Tags should use spaces between words, NOT hyphens. Example: ["login screen", "navigation bar", "blue color scheme"] not ["login-screen", "navigation-bar", "blue-color-scheme"]
+
 Example response:
 {{
   "company_name": "Chase Bank",
   "product_category": "mobile banking app",
   "descriptive_tags": [
-    "login-screen", "two-factor-auth", "biometric-login", "minimalist-design",
-    "blue-color-scheme", "sans-serif-typography", "centered-layout",
-    "secure-badge", "mobile-first", "ios-design"
+    "login screen", "two factor auth", "biometric login", "minimalist design",
+    "blue color scheme", "sans serif typography", "centered layout",
+    "secure badge", "mobile first", "ios design"
   ]
 }}
 
@@ -315,4 +318,6 @@ Respond with JSON only, no additional text."""
 
     except Exception as e:
         print(f"Error generating tags for {image_path}: {e}")
+        import traceback
+        traceback.print_exc()  # Print full error for debugging
         return {"company_name": "", "product_category": "", "descriptive_tags": []}

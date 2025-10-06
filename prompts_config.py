@@ -33,7 +33,9 @@ TAG_FOCUS_INSTRUCTION = """Focus on:
 - Specific UI components (button, form, modal, navigation bar, card, list, etc)
 - Screen type (login, signup, profile, settings, dashboard, etc)
 - Interactions (empty state, error state, loading, success message, etc)
-- Layout patterns (sidebar, grid, tabs, drawer, etc)"""
+- Layout patterns (sidebar, grid, tabs, drawer, etc)
+
+IMPORTANT: Use spaces between words, not hyphens. For example: "navigation bar" not "navigation-bar", "login screen" not "login-screen"."""
 
 # Instructions for identifying company/brand
 COMPANY_INSTRUCTION = "Look for branding, logos, or identifiable design systems"

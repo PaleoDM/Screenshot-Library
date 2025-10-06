@@ -492,10 +492,26 @@ with tab1:
         
         # Generate individual tags if not already done
         if not st.session_state.image_data_dict:
-            with st.spinner("Generating tags for individual images..."):
-                for image_path in st.session_state.uploaded_files:
-                    image_data = generate_image_tags(image_path, final_project_tags)
-                    st.session_state.image_data_dict[image_path] = image_data
+            import time
+            progress_bar = st.progress(0)
+            status_text = st.empty()
+            
+            for idx, image_path in enumerate(st.session_state.uploaded_files):
+                status_text.text(f"Generating tags for image {idx + 1}/{len(st.session_state.uploaded_files)}: {os.path.basename(image_path)}")
+                
+                image_data = generate_image_tags(image_path, final_project_tags)
+                st.session_state.image_data_dict[image_path] = image_data
+                
+                # Update progress
+                progress_bar.progress((idx + 1) / len(st.session_state.uploaded_files))
+                
+                # Add delay to avoid rate limits (skip delay for last image)
+                if idx < len(st.session_state.uploaded_files) - 1:
+                    time.sleep(2)  # 2 second delay between API calls
+            
+            status_text.text("✅ Tag generation complete!")
+            progress_bar.empty()
+            status_text.empty()
         
         # Display images in grid with editable structured fields
         for i in range(0, len(st.session_state.uploaded_files), config.IMAGES_PER_ROW):

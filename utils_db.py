@@ -16,15 +16,15 @@ def get_chroma_client():
 
 
 def get_or_create_collection():
-    """Get or create the screenshots collection with CLIP embeddings"""
+    """Get or create the screenshots collection"""
     client = get_chroma_client()
     
-    # Use CLIP for image embeddings
-    clip_ef = embedding_functions.OpenCLIPEmbeddingFunction()
+    # Disable CLIP for Streamlit Cloud - use default embeddings
+    # clip_ef = embedding_functions.OpenCLIPEmbeddingFunction()
     
     collection = client.get_or_create_collection(
         name=config.COLLECTION_NAME,
-        embedding_function=clip_ef,
+        # embedding_function=clip_ef,  # Commented out
         metadata={"hnsw:space": "cosine"}
     )
     

@@ -17,16 +17,23 @@ import config
 # Client & small utilities
 # ---------------------------
 
-# Initialize Anthropic client
-def get_api_key():
-    """Get API key from Streamlit secrets or environment variable"""
-    try:
-        import streamlit as st
-        return st.secrets.get("ANTHROPIC_API_KEY")
-    except:
-        return os.getenv("ANTHROPIC_API_KEY")
+_client = None
 
-client = Anthropic(api_key=get_api_key())
+def get_client():
+    """Get or create Anthropic client with proper API key handling"""
+    global _client
+    if _client is None:
+        # Try environment variable first (local development)
+        api_key = os.getenv("ANTHROPIC_API_KEY")
+        
+        # Fall back to Streamlit secrets (cloud deployment)
+        if not api_key:
+            import streamlit as st
+            api_key = st.secrets["ANTHROPIC_API_KEY"]
+        
+        _client = Anthropic(api_key=api_key)
+    
+    return _client
 
 def _extract_first_json_object(text: str) -> Dict[str, Any]:
     """

@@ -17,23 +17,8 @@ import config
 # Client & small utilities
 # ---------------------------
 
-_client = None
-
-def get_client():
-    """Get or create Anthropic client with proper API key handling"""
-    global _client
-    if _client is None:
-        # Try environment variable first (local development)
-        api_key = os.getenv("ANTHROPIC_API_KEY")
-        
-        # Fall back to Streamlit secrets (cloud deployment)
-        if not api_key:
-            import streamlit as st
-            api_key = st.secrets["ANTHROPIC_API_KEY"]
-        
-        _client = Anthropic(api_key=api_key)
-    
-    return _client
+# Initialize Anthropic client
+client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 def _extract_first_json_object(text: str) -> Dict[str, Any]:
     """
@@ -233,7 +218,7 @@ def generate_project_tags(image_paths: List[str], project_name: str) -> List[str
         })
 
     try:
-        response = get_client().messages.create(
+        response = client.messages.create(
             model=config.ANTHROPIC_MODEL,
             max_tokens=config.MAX_TOKENS,
             temperature=0.3,
@@ -299,7 +284,7 @@ Example response:
 Respond with JSON only, no additional text."""
 
     try:
-        response = get_client().messages.create(
+        response = client.messages.create(
             model=config.ANTHROPIC_MODEL,
             max_tokens=config.MAX_TOKENS,
             temperature=0.3,

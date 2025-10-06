@@ -18,7 +18,15 @@ import config
 # ---------------------------
 
 # Initialize Anthropic client
-client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+def get_api_key():
+    """Get API key from Streamlit secrets or environment variable"""
+    try:
+        import streamlit as st
+        return st.secrets.get("ANTHROPIC_API_KEY")
+    except:
+        return os.getenv("ANTHROPIC_API_KEY")
+
+client = Anthropic(api_key=get_api_key())
 
 def _extract_first_json_object(text: str) -> Dict[str, Any]:
     """

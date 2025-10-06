@@ -23,6 +23,10 @@ from utils_db import (
 )
 from utils_search import search_screenshots, search_by_tags
 
+# Ensure required directories exist for Streamlit Cloud
+os.makedirs("/tmp/chroma_db", exist_ok=True)
+os.makedirs("screenshots_library", exist_ok=True)
+
 # Page configuration
 st.set_page_config(
     page_title="UI Design Reference Library",
